@@ -9,9 +9,11 @@ class sudoku {
 
 class Solution {
     private int[][] m;
+    private int[][] key;
     private boolean[][] box_check;
-    private int count;
     private boolean[][] isAlready;
+    private boolean hasSolution;
+    private int count;
 
     public boolean isValid(int a, int b, int temp_V) {
 
@@ -38,8 +40,9 @@ class Solution {
 
     private void Init() {
         try (Scanner sc = new Scanner(System.in)) {
-            count = 0;
+            count = 54; hasSolution = false;
             m = new int[9][9];
+            key = new int[9][9];
             box_check = new boolean[50][50];
             isAlready = new boolean[50][50];
 
@@ -52,11 +55,6 @@ class Solution {
             for (int i = 0; i < 9; i++)
                 for (int j = 0; j < 9; j++) {
                     m[i][j] = 0;
-                    if (m[i][j] == 0)
-                        count++;
-                    else
-                        isAlready[i][j] = true;
-                    box_check[3 * (i / 3) + j / 3][m[i][j]] = (m[i][j] != 0) ? true : false;
                 }
         }
     }
@@ -65,29 +63,37 @@ class Solution {
         
         for(int i = m; i < temp; i++){
             for(int j = n; j < temp; j++){
-                int rand = (int)(Math.random()*8 + 1);
+                int rand = (int)(Math.random()*9 + 1);
                 while(isValid(i, j, rand) == false){
-                    rand = 1 + (int)(Math.random()*8 + 1);
+                    rand = (int)(Math.random()*9 + 1);
                 }
                 box_check[3 * (i / 3) + j / 3][rand] = true;
-                this.m[i][j] = rand;
+                this.m[i][j] = rand; isAlready[i][j] = true;
             }
         }
        
     }
-    public void Generate(){
+    public void Generate(int k){
         this.Init();{
-            Fill(0, 0);
-            Fill(3, 3);
-        
+            for(int i = 0; i < 7; i += 3){
+                Fill(i, i);
+            }
+        }
+        solve(-1); m = key;
+        while(--k >= 0 ){
+            int i = (int)(Math.random()*9);
+            int j = (int)(Math.random()*9);
+            m[i][j] = 0;
         }
     }
+
     public void solve(int k) {
         int x = (k + 1) / 9;
         int y = (k + 1) % 9;
 
+        if(hasSolution == true) return;
         if (count == 0) {
-            print(); return;
+            key = m; hasSolution = true ;return;
         }
         if (isAlready[x][y] == true) {
             solve(k+1);
@@ -113,7 +119,7 @@ class Solution {
     }
 
     public void Result() {
-       Generate(); print();
+       Generate(5); print();
     }
 
 }
