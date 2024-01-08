@@ -29,7 +29,7 @@ class Solution {
         return false;
     }
 
-    public void print() {
+    public void print(int[][] m) {
         System.out.println("");
         for (int k = 0; k < 9; k++) {
             for (int j = 0; j < 9; j++)
@@ -79,7 +79,11 @@ class Solution {
                 Fill(i, i);
             }
         }
-        solve(-1); m = key;
+        solve(-1); 
+        for(int i = 0; i < 9; i++)
+            for(int j = 0; j < 9; j++)
+                m[i][j] = key[i][j];
+
         while(--k >= 0 ){
             int i = (int)(Math.random()*9);
             int j = (int)(Math.random()*9);
@@ -93,7 +97,11 @@ class Solution {
 
         if(hasSolution == true) return;
         if (count == 0) {
-            key = m; hasSolution = true ;return;
+            
+            for(int i = 0; i < 9; i++)
+                for(int j = 0; j < 9; j++)
+                    key[i][j] = m[i][j];
+            hasSolution = true ;return;
         }
         if (isAlready[x][y] == true) {
             solve(k+1);
@@ -119,7 +127,8 @@ class Solution {
     }
 
     public void Result() {
-       Generate(5); print();
+        
+        Generate(20 + (int)(Math.random()*50)); print(m); print(key);
     }
 
 }
