@@ -1,9 +1,9 @@
 import java.util.*;
-
+import java.io.*;
 class sudoku {
-    public static void main(String[] args) {
+    public static void main(String[] args){
         Solution so = new Solution();
-        so.Result();
+        so.run();
     }
 }
 
@@ -33,13 +33,13 @@ class Solution {
         System.out.println("");
         for (int k = 0; k < 9; k++) {
             for (int j = 0; j < 9; j++)
-                System.out.print(m[k][j] + " ");
-            System.out.println("");
+                System.out.print(m[k][j] + "  ");
+            System.out.println('\n');
         }
     }
 
     private void Init() {
-        try (Scanner sc = new Scanner(System.in)) {
+    
             count = 54; hasSolution = false;
             m = new int[9][9];
             key = new int[9][9];
@@ -56,7 +56,6 @@ class Solution {
                 for (int j = 0; j < 9; j++) {
                     m[i][j] = 0;
                 }
-        }
     }
     public void Fill(int m, int n){
         int rank = 3; int temp = rank*((m/rank + 1));
@@ -74,16 +73,17 @@ class Solution {
        
     }
     public void Generate(int k){
-        this.Init();{
-            for(int i = 0; i < 7; i += 3){
+        this.Init();
+        for(int i = 0; i < 7; i += 3){
                 Fill(i, i);
             }
-        }
-        solve(-1); 
+        
+        solver(-1); 
         for(int i = 0; i < 9; i++)
             for(int j = 0; j < 9; j++)
                 m[i][j] = key[i][j];
 
+        this.count = 81 - k;
         while(--k >= 0 ){
             int i = (int)(Math.random()*9);
             int j = (int)(Math.random()*9);
@@ -91,7 +91,7 @@ class Solution {
         }
     }
 
-    public void solve(int k) {
+    public void solver(int k) {
         int x = (k + 1) / 9;
         int y = (k + 1) % 9;
 
@@ -104,7 +104,7 @@ class Solution {
             hasSolution = true ;return;
         }
         if (isAlready[x][y] == true) {
-            solve(k+1);
+            solver(k+1);
             return;
         }
 
@@ -115,7 +115,7 @@ class Solution {
               
                 count--;
 
-                solve(k + 1);
+                solver(k + 1);
 
                 box_check[3 * (x / 3) + y / 3][i] = false;
                 m[x][y] = 0;
@@ -125,10 +125,41 @@ class Solution {
         }
 
     }
+    public void run(){
+        Generate(20 + (int)(Math.random()*50));
+        int i, j;
+        this.print(m);
+      try ( Scanner sc = new Scanner(System.in)){        
+       
+        while(this.count > 0){
+            System.out.println("Input(1->9): ");
+             
+           i = (int)(sc.next().charAt(0)) - 48;
+           
+           j = (int)(sc.next().charAt(0)) - 48;
+                 
+           
+           
 
-    public void Result() {
-        
-        Generate(20 + (int)(Math.random()*50)); print(m); print(key);
+            System.out.println("Input: " + i + " " + j);
+
+                if(this.m[i-1][j-1] != 0){
+                    System.out.println("Index is already assigned");
+                } else {
+                    System.out.println("Insert value: ");
+                    this.m[i][j] = sc.nextInt();
+                }
+            this.print(m);
+        }
+           
+        }
+       
     }
+  
+    /*   System.out.print("\033[H\033[2J");  
+        System.out.flush();  */ 
+        
+        
+    
 
 }
