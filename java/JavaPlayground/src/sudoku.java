@@ -125,21 +125,22 @@ class Solution {
         }
 
     }
-    public void run(){
-        Generate(20 + (int)(Math.random()*50));
+    
+  public void run(){
+        Generate(20 + (int)(Math.random()*30));
         int i, j;
         this.print(m);
       try ( Scanner sc = new Scanner(System.in)){        
-       
+
         while(this.count > 0){
             System.out.println("Input(1->9): ");
-             
+
            i = (int)(sc.next().charAt(0)) - 48;
-           
+
            j = (int)(sc.next().charAt(0)) - 48;
-                 
-           
-           
+
+
+
 
             System.out.println("Input: " + i + " " + j);
 
@@ -147,15 +148,21 @@ class Solution {
                     System.out.println("Index is already assigned");
                 } else {
                     System.out.println("Insert value: ");
-                    this.m[i][j] = sc.nextInt();
+                    this.m[i-1][j-1] = sc.nextInt();
+                    
+                    if(m[i-1][j-1] != key[i-1][j-1]){
+                    	  System.out.println("Wrong Answer");
+                    	  m[i-1][j-1] = 0;
+                    } else {
+                    	count--; 
+                    }
                 }
             this.print(m);
         }
-           
+
         }
-       
+
     }
-  
     /*   System.out.print("\033[H\033[2J");  
         System.out.flush();  */ 
         
