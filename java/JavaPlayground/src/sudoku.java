@@ -15,6 +15,7 @@ class Solution {
     private boolean hasSolution;
     private int count;
 
+    
     public boolean isValid(int a, int b, int temp_V) {
 
         for (int i = 0; i < 9; i++)
@@ -83,7 +84,7 @@ class Solution {
             for(int j = 0; j < 9; j++)
                 m[i][j] = key[i][j];
 
-        this.count = 81 - k;
+        this.count = k;
         while(--k >= 0 ){
             int i = (int)(Math.random()*9);
             int j = (int)(Math.random()*9);
@@ -127,7 +128,7 @@ class Solution {
     }
     
   public void run(){
-        Generate(20 + (int)(Math.random()*30));
+        Generate(2);// + (int)(Math.random()*30));
         int i, j;
         this.print(m);
       try ( Scanner sc = new Scanner(System.in)){        
