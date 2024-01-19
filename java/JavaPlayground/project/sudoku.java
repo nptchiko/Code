@@ -1,5 +1,4 @@
 import java.util.*;
-import java.io.*;
 class sudoku {
     public static void main(String[] args){
         Solution so = new Solution();
@@ -7,16 +6,16 @@ class sudoku {
     }
 }
 
-class Solution {
+class Game {
     private int[][] m;
     private int[][] key;
     private boolean[][] box_check;
-    private boolean[][] isAlready;
+    private boolean[][] isAssigned;
     private boolean hasSolution;
-    private int count;
+    private int counter;
 
     
-    public boolean isValid(int a, int b, int temp_V) {
+    private boolean isValid(int a, int b, int temp_V) {
 
         for (int i = 0; i < 9; i++)
             if (m[a][i] == temp_V && i != b)
@@ -29,36 +28,7 @@ class Solution {
             return true;
         return false;
     }
-
-    public void print(int[][] m) {
-        System.out.println("");
-        for (int k = 0; k < 9; k++) {
-            for (int j = 0; j < 9; j++)
-                System.out.print(m[k][j] + "  ");
-            System.out.println('\n');
-        }
-    }
-
-    private void Init() {
-    
-            count = 54; hasSolution = false;
-            m = new int[9][9];
-            key = new int[9][9];
-            box_check = new boolean[50][50];
-            isAlready = new boolean[50][50];
-
-            for (int i = 0; i <= 9; i++)
-                for (int j = 0; j <= 9; j++) {
-                    box_check[i][j] = false;
-                    isAlready[i][j] = false;
-                }
-
-            for (int i = 0; i < 9; i++)
-                for (int j = 0; j < 9; j++) {
-                    m[i][j] = 0;
-                }
-    }
-    public void Fill(int m, int n){
+    private void fill(int m, int n){
         int rank = 3; int temp = rank*((m/rank + 1));
         
         for(int i = m; i < temp; i++){
@@ -68,23 +38,51 @@ class Solution {
                     rand = (int)(Math.random()*9 + 1);
                 }
                 box_check[3 * (i / 3) + j / 3][rand] = true;
-                this.m[i][j] = rand; isAlready[i][j] = true;
+                this.m[i][j] = rand; isAssigned[i][j] = true;
             }
         }
        
     }
-    public void Generate(int k){
-        this.Init();
+    public void UIprinter(int[][] m) {
+        System.out.println("");
+        for (int k = 0; k < 9; k++) {
+            for (int j = 0; j < 9; j++)
+                System.out.print(m[k][j] + "  ");
+            System.out.println('\n');
+        }
+    }
+
+    public void Initializator() {
+    
+            counter = 54; hasSolution = false;
+            m = new int[9][9];
+            key = new int[9][9];
+            box_check = new boolean[50][50];
+            isAssigned = new boolean[50][50];
+
+            for (int i = 0; i <= 9; i++)
+                for (int j = 0; j <= 9; j++) {
+                    box_check[i][j] = false;
+                    isAssigned[i][j] = false;
+                }
+
+            for (int i = 0; i < 9; i++)
+                for (int j = 0; j < 9; j++) {
+                    m[i][j] = 0;
+                }
+    }
+    public void generator(int k){
+        this.Initializator();;
         for(int i = 0; i < 7; i += 3){
-                Fill(i, i);
-            }
+                fill(i, i);
+        }
         
-        solver(-1); 
+        this.solver(-1); 
         for(int i = 0; i < 9; i++)
             for(int j = 0; j < 9; j++)
                 m[i][j] = key[i][j];
 
-        this.count = k;
+        this.counter = k;
         while(--k >= 0 ){
             int i = (int)(Math.random()*9);
             int j = (int)(Math.random()*9);
@@ -97,15 +95,15 @@ class Solution {
         int y = (k + 1) % 9;
 
         if(hasSolution == true) return;
-        if (count == 0) {
+        if (counter == 0) {
             
             for(int i = 0; i < 9; i++)
                 for(int j = 0; j < 9; j++)
                     key[i][j] = m[i][j];
             hasSolution = true ;return;
         }
-        if (isAlready[x][y] == true) {
-            solver(k+1);
+        if (isAssigned[x][y] == true) {
+            this.solver(k+1);
             return;
         }
 
@@ -114,26 +112,32 @@ class Solution {
                 box_check[3 * (x / 3) + y / 3][i] = true;
                 m[x][y] = i;
               
-                count--;
+                counter--;
 
-                solver(k + 1);
+                this.solver(k + 1);
 
                 box_check[3 * (x / 3) + y / 3][i] = false;
                 m[x][y] = 0;
             
-                count++;
+                counter++;
             }
         }
 
     }
     
+
+
+
   public void run(){
-        Generate(2);// + (int)(Math.random()*30));
+
+        this.generator(2);// + (int)(Math.random()*30));
+
         int i, j;
-        this.print(m);
+
+        this.UIprinter(m);
       try ( Scanner sc = new Scanner(System.in)){        
 
-        while(this.count > 0){
+        while(this.counter > 0){
             System.out.println("Input(1->9): ");
 
            i = (int)(sc.next().charAt(0)) - 48;
@@ -146,28 +150,42 @@ class Solution {
             System.out.println("Input: " + i + " " + j);
 
                 if(this.m[i-1][j-1] != 0){
-                    System.out.println("Index is already assigned");
+                    System.out.println("Input is already assigned");
+
                 } else {
                     System.out.println("Insert value: ");
                     this.m[i-1][j-1] = sc.nextInt();
                     
                     if(m[i-1][j-1] != key[i-1][j-1]){
-                    	  System.out.println("Wrong Answer");
+                    	  System.out.println("Wrong Answer "  + '\n' + "NONNNN");
                     	  m[i-1][j-1] = 0;
+
                     } else {
-                    	count--; 
+                    	this.counter--; 
                     }
                 }
-            this.print(m);
+            this.UIprinter(m);
         }
 
-        }
+        } catch(InputMismatchException e) {
+            e.printStackTrace();
+        } 
 
     }
-    /*   System.out.print("\033[H\033[2J");  
-        System.out.flush();  */ 
-        
-        
-    
-
 }
+    /*   System.out.print("\033[H\033[2J");  
+        System.out.flush();  
+
+class User {
+    private Game game;
+    private int level;
+
+    User(){
+        this.game.Initializator();
+        this.level = 0;
+    }
+    public void play(){
+
+    }
+}
+*/
