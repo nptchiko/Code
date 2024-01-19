@@ -1,8 +1,12 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 class sudoku {
     public static void main(String[] args){
-        Solution so = new Solution();
-        so.run();
+        Player player = new Player();
+        player.showUI();
+        player.play();
     }
 }
 
@@ -128,9 +132,9 @@ class Game {
 
 
 
-  public void run(){
+  public void run(int level){
 
-        this.generator(2);// + (int)(Math.random()*30));
+        this.generator(level);// + (int)(Math.random()*30));
 
         int i, j;
 
@@ -150,7 +154,16 @@ class Game {
             System.out.println("Input: " + i + " " + j);
 
                 if(this.m[i-1][j-1] != 0){
-                    System.out.println("Input is already assigned");
+                    System.out.println("Input is already assigned - " + this.m[i][j-1]);
+
+                    try {
+                        Thread.sleep(1000);
+                        System.out.print("\033[H\033[2J");  
+                        System.out.flush();  
+
+                      } catch (InterruptedException e){
+                            e.printStackTrace();
+                      }
 
                 } else {
                     System.out.println("Insert value: ");
@@ -159,6 +172,15 @@ class Game {
                     if(m[i-1][j-1] != key[i-1][j-1]){
                     	  System.out.println("Wrong Answer "  + '\n' + "NONNNN");
                     	  m[i-1][j-1] = 0;
+
+                          try {
+                            Thread.sleep(1000);
+                            System.out.print("\033[H\033[2J");  
+                            System.out.flush();  
+
+                          } catch (InterruptedException e){
+                                e.printStackTrace();
+                          }
 
                     } else {
                     	this.counter--; 
@@ -173,19 +195,43 @@ class Game {
 
     }
 }
-    /*   System.out.print("\033[H\033[2J");  
-        System.out.flush();  
+       
 
-class User {
+class Player {
     private Game game;
     private int level;
 
-    User(){
+    Player(){
+
+        this.game = new Game();
+
         this.game.Initializator();
         this.level = 0;
     }
     public void play(){
+        if(this.game != null){
+            this.game.run((int)( 10 + Math.random()*8*this.level));
+        }
+    }
+    public void showUI() {
+        System.out.print("\033[H\033[2J");  
+        System.out.flush();  
 
+        System.out.println("--------SUDOKU-------");
+        System.out.println("\nMade by Chiko");
+        System.out.println("\nSelect level: " + "\n" + "1.Easy" + "\n" + "2.Normal"
+        + "\n" + "3.Hard" + "\n" + "Your choice: ");
+
+        try{
+            BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
+            
+            this.level = r.read();
+
+            if(this.level < 0) this.level = 1;
+            if(this.level > 3) this.level = 3;
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }
-*/
