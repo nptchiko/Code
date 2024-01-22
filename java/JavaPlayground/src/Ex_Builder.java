@@ -56,8 +56,27 @@ class Car{
     }
 }
 
-class Engine{}
-class GPS{}
+class Engine{
+    private double maxV;
+    private double acceleration;
+
+    public Engine(double maxV, double acceleration){
+        this.maxV = maxV;
+        this.acceleration = acceleration;
+    }
+}
+class GPS{
+    String route;
+
+    public GPS(String route){
+        this.route = route;
+    }
+}
+class Director {
+    public void constructSportCar(CarBuilder builder){
+        builder.setEngine(new Engine(100, 50));
+    }
+}
 public class Ex_Builder {
     
 }
