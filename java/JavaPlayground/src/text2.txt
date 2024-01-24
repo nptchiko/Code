@@ -1,0 +1,7 @@
+readFully(6D*[] b) : java.io.RandomAccessFile.readFully(byte[] b) reads bytes upto b.length from the buffer, start reading from the File Pointer.
+Syntax :
+public final void readFully(byte[] b)
+Parameters : 
+b : buffer to be read
+Return  :
+reads bytes initialising from offset position upto b.length from the buffer
