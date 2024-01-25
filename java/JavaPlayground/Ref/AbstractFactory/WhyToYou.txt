@@ -1,0 +1,3 @@
+* Khá tương tự Factory Pattern, cho phép bạn mở rộng code để tạo
+thêm class con mới mà không ảnh hưởng đến code ban đầu và client
+code
