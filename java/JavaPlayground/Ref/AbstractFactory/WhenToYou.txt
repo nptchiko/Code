@@ -1,0 +1,5 @@
+*Sử dụng Abstract Factory khi mã của bạn cần làm việc với nhiều họ
+sản phẩm liên quan khác nhau, nhưng bạn không muốn nó phụ thuộc 
+vào các concrete classes của các sản phẩm đó — chúng có thể
+không được biết trước hoặc bạn chỉ muốn cho phép khả năng mở 
+rộng trong tương lai.

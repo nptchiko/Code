@@ -1,0 +1,7 @@
+* Ta có thể mở rộng code một cách thoải mái, bằng cách
+tạo một trường mới và override từ base factory mà không cần thay
+đổi code ban đầu
+
+* Giảm bớt sự phụ thuộc: Khi ta thêm hoặc bớt các trường thì 
+code của khách hàng cũng sẽ không bị ảnh hưởng
+
